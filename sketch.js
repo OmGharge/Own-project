@@ -9,6 +9,8 @@ var bulletImg;
 var gunSound;
 var gunReload;
 var bg;
+var health = 50;
+var bulletGroup;
 
 function preload(){
   //loading the images
@@ -45,12 +47,37 @@ function setup() {
   player2.scale = 0.3;
   ;
     
-
+   bulletGroup1 = new Group(); 
+   bulletGroup2 = new Group(); 
 
 } 
 
 function draw() {
   background(bg);
+  textSize(15);
+  textStyle(BOLD);
+  text("HEALTH =  "+health,200,75);
+ 
+  fill("white");
+
+  textSize(15);
+  textStyle(BOLD);
+  text("HEALTH =  "+health,800,75);
+ 
+  fill("white");
+
+  textSize(15);
+  textStyle(BOLD);
+  text("SCORE = 0 ",200,90);
+ 
+  fill("white");
+
+  textSize(15);
+  textStyle(BOLD);
+  text("SCORE = 0 ",800,90);
+ 
+  fill("white");
+  
 
 if(keyWentDown("space")){
   
@@ -105,6 +132,15 @@ if(keyWentDown("space")){
     //player1.addAnimation("soldier",soldier_running);
   }
 
+
+  if(bulletGroup1.isTouching(player2)){
+    health = health-10
+ }
+ if(bulletGroup2.isTouching(player1)){
+  health = health-10
+}
+
+
 drawSprites();
 
 
@@ -116,7 +152,8 @@ function shootBullet1(){
   bullet.addImage("bullet",bulletImg);
   bullet.scale=0.12;
   bullet.velocityX= 15;
-  //bulletGroup.add(bullet);
+  bulletGroup1.add(bullet);
+
 }
 
 function shootBullet2(){
@@ -126,5 +163,5 @@ function shootBullet2(){
   bullet.addImage("bullet",bulletImgRevert);
   bullet.scale=0.12;
   bullet.velocityX= -15;
-  //bulletGroup.add(bullet);
+  bulletGroup2.add(bullet);
 }
