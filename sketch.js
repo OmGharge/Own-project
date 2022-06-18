@@ -9,7 +9,15 @@ var bulletImg;
 var gunSound;
 var gunReload;
 var bg;
-var health = 50;
+var missile;
+var health1 = 50;
+var health2 = 50;
+var score1 = 0;
+var score2 = 0;
+
+
+
+
 var bulletGroup;
 
 function preload(){
@@ -56,25 +64,25 @@ function draw() {
   background(bg);
   textSize(15);
   textStyle(BOLD);
-  text("HEALTH =  "+health,200,75);
+  text("HEALTH =  "+health1,200,75);
  
   fill("white");
 
   textSize(15);
   textStyle(BOLD);
-  text("HEALTH =  "+health,800,75);
+  text("HEALTH =  "+health2,800,75);
  
   fill("white");
 
   textSize(15);
   textStyle(BOLD);
-  text("SCORE = 0 ",200,90);
+  text("SCORE =  "+score1,200,90);
  
   fill("white");
 
   textSize(15);
   textStyle(BOLD);
-  text("SCORE = 0 ",800,90);
+  text("SCORE =  "+score2,800,90);
  
   fill("white");
   
@@ -128,16 +136,18 @@ if(keyWentDown("space")){
     //player1.addAnimation("soldier",soldier_running);
   }
   if(keyDown("LEFT_ARROW")){
-    player2.x=player.x-7;
+    player2.x=player2.x-7;
     //player1.addAnimation("soldier",soldier_running);
   }
 
 
   if(bulletGroup1.isTouching(player2)){
-    health = health-10
+    health2 = health2-10;
+    score1 = score1+10
  }
  if(bulletGroup2.isTouching(player1)){
-  health = health-10
+  health1 = health1-10
+  score2 = score2+10
 }
 
 
@@ -164,4 +174,15 @@ function shootBullet2(){
   bullet.scale=0.12;
   bullet.velocityX= -15;
   bulletGroup2.add(bullet);
+}
+function spawnMissile(){
+  if(frameCount  %  120 === 0 ){
+   
+    var missile = createSprite(400,330,40,40);
+    missile.addImage()
+
+
+  }
+
+
 }
