@@ -15,6 +15,9 @@ var health1 = 50;
 var health2 = 50;
 var score1 = 0;
 var score2 = 0;
+var blast;
+var healthImg;
+gameState = 0;
 
 
 
@@ -35,6 +38,8 @@ function preload(){
  soldier_sitting = loadAnimation("soldier4.png","soldier5.png");
  soldier_sittingRevert = loadAnimation("..//revert/soldier4.png","..//revert/soldier5.png");
  missileImg = loadImage("..//missile.png");
+ blast = loadImage("..//blast.png");
+ healthImg = loadImage("..//health.png");
 }
 
 function setup() {
@@ -42,13 +47,13 @@ function setup() {
 
   
   player1 = createSprite(width/2-500,200);
-  player1.addImage('boy',soldier_standing);
-  player1.addAnimation("soldierrunning",soldier_running);
-  player1.addAnimation("soldiersitting",soldier_sitting);
+  player1.addImage('soldier1',soldier_standing);
+  player1.addAnimation("soldier1",soldier_running);
+  player1.addAnimation("soldier1",soldier_sitting);
 
   player2 = createSprite(width/1-500,200);
- player2.addImage('boy',soldier_standingRevert);
-  player2.addAnimation("soldierrunning",soldier_runningRevert);
+ player2.addImage('soldier2',soldier_standingRevert);
+  player2.addAnimation("soldier2",soldier_runningRevert);
  // player4.addAnimation("soldiersitting",soldier_sitting);
 
   
@@ -58,7 +63,9 @@ function setup() {
   ;
     
    bulletGroup1 = new Group(); 
-   bulletGroup2 = new Group(); 
+   bulletGroup2 = new Group();
+   missileGroup = new Group(); 
+   healthGroup = new Group();
 
 } 
 
@@ -87,20 +94,19 @@ function draw() {
   text("SCORE =  "+score2,800,90);
  
   fill("white");
-  
 
 if(keyWentDown("space")){
   
     gunSound.play();
     shootBullet1();
-    player1.changeAnimation("soldierrunning",soldier_running);
+    player1.changeAnimation("soldier1",soldier_running);
  
   }
   if(keyWentDown("p")){
   
     gunSound.play();
     shootBullet2();
-    player2.changeAnimation("soldierrunning",soldier_running);
+    player2.changeAnimation("soldier2",soldier_running);
  
   }
 
@@ -109,12 +115,12 @@ if(keyWentDown("space")){
    //player1.x = mouse.x;
    if(keyDown("w")){
     player1.y=player1.y-7;
-     player1.addAnimation("soldier",soldier_running);
+     player1.addAnimation("soldier1",soldier_running);
   }
 
   if(keyDown("s")){
     player1.y=player1.y+7;
-    player1.changeAnimation("soldiersitting",soldier_sitting);
+    player1.changeAnimation("soldier1",soldier_sitting);
   }
   if(keyDown("d")){
     player1.x=player1.x+7;
@@ -126,12 +132,12 @@ if(keyWentDown("space")){
   }
   if(keyDown("UP_ARROW")){
     player2.y=player2.y-7;
-    // player2.addAnimation("soldier",soldier_runningRevert);
+    player2.addAnimation("soldier2",soldier_runningRevert);
   }
 
   if(keyDown("DOWN_ARROW")){
     player2.y=player2.y+7;
-  //  player2.changeAnimation("soldiersitting",soldier_sittingRevert);
+   player2.changeAnimation("soldier2",soldier_sittingRevert);
   }
   if(keyDown("RIGHT_ARROW")){
     player2.x=player2.x+7;
@@ -152,6 +158,31 @@ if(keyWentDown("space")){
   score2 = score2+10
 }
 
+if(missileGroup.isTouching(player1)){
+health1 = health1-20
+missileGroup.destroyEach();
+
+}
+if(missileGroup.isTouching(player2)){
+  health2 = health2-20
+  missileGroup.destroyEach();
+ // missileGroup.addImage(blast);
+  }
+
+  if(healthGroup.isTouching(player1)){
+    health1 = health1+20
+    healthGroup.destroyEach();
+     
+    }
+    if(healthGroup.isTouching(player2)){
+      health2 = health2+20
+      healthGroup.destroyEach();
+   
+     // missileGroup.addImage(blast);
+      }
+    
+spawnMissiles();
+spawnHealth();
 
 drawSprites();
 
@@ -177,15 +208,36 @@ function shootBullet2(){
   bullet.velocityX= -15;
   bulletGroup2.add(bullet);
 }
-function spawnMissile(){
-  if(frameCount  %  120 === 0 ){
-   
-    var missile = createSprite(400,330,40,40);
-    missile.addImage("missile",missileImg);
+function spawnMissiles() {
+  if(frameCount % 300 === 0) {
+
+    var missile = createSprite(400,0);
+    missile.setCollider("rectangle",0,0,200,200)
+    missile.addImage(missileImg);
+    missile.x = Math.round(random(10,800))
+    missile.velocityY = 5;
+     missile.scale =  0.5;      
+    missileGroup.add(missile);
+   // obstacle.lifetime = 400;
+   // obstaclesGroup.add(obstacle);
     
-
-
   }
+ 
+ 
+}
 
+function spawnHealth() {
+  if(frameCount % 300 === 0) {
 
+    var health = createSprite(400,0);
+    health.setCollider("rectangle",0,0,200,200)
+    health.addImage(healthImg);
+    health.x = Math.round(random(10,800))
+    health.velocityY = 5;
+    health.scale =  0.5;      
+    healthGroup.add(health);
+   // obstacle.lifetime = 400;
+   // obstaclesGroup.add(obstacle);
+    
+  }
 }
