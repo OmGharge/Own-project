@@ -10,6 +10,7 @@ var gunSound;
 var gunReload;
 var bg;
 var missile;
+var missileImg;
 var health1 = 50;
 var health2 = 50;
 var score1 = 0;
@@ -33,6 +34,7 @@ function preload(){
  bg = loadImage("bg1.jpg")
  soldier_sitting = loadAnimation("soldier4.png","soldier5.png");
  soldier_sittingRevert = loadAnimation("..//revert/soldier4.png","..//revert/soldier5.png");
+ missileImg = loadImage("..//missile.png");
 }
 
 function setup() {
@@ -179,7 +181,8 @@ function spawnMissile(){
   if(frameCount  %  120 === 0 ){
    
     var missile = createSprite(400,330,40,40);
-    missile.addImage()
+    missile.addImage("missile",missileImg);
+    
 
 
   }
